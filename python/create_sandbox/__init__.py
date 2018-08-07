@@ -10,9 +10,6 @@
 
 import sgtk
 
-from . import base_hooks
-from . import util
-
 def show_dialog(app):
     """
     Show the main dialog ui

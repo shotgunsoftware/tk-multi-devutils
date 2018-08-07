@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="tk_multi_devutils_create_sb">
+    <file>complete.png</file>
+    <file>failed.png</file>
+  </qresource>
+</RCC>

@@ -38,7 +38,7 @@ function build_res {
 
 # build main UIs:
 echo "building user interfaces..."
-UI_PYTHON_PATH=../python/create_sandbox/ui
+UI_PYTHON_PATH=../../python/create_sandbox/ui
 build_ui dialog
 
 # build resources
