@@ -42,7 +42,7 @@ class MultiDevUtils(sgtk.platform.Application):
 
         # certain menu options are only available if you
         # are running out of a dev descriptor config:
-        if self.sgtk.configuration_descriptor.is_dev() or True:
+        if self.sgtk.configuration_descriptor.is_dev():
 
             # command to jump to the dev area.
             menu_options = {
@@ -63,7 +63,7 @@ class MultiDevUtils(sgtk.platform.Application):
                 "type": "context_menu",
             }
             self.engine.register_command(
-                "Check for updates...",
+                "Check for config updates...",
                 self._updates,
                 menu_options
             )

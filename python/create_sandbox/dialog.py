@@ -43,6 +43,9 @@ class AppDialog(QtGui.QWidget):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
 
+        # untick copy checkbox
+        self.ui.copy_config.setChecked(False)
+
         # spinner widget
         # now inside your app constructor, create an overlay and parent it to something
         self._overlay = overlay.ShotgunOverlayWidget(self.ui.page_input)
@@ -57,11 +60,24 @@ class AppDialog(QtGui.QWidget):
         self.ui.browse.clicked.connect(self._browse)
         self.ui.action_button.clicked.connect(self._process)
 
+        self.ui.path.textChanged.connect(self._on_text_changed)
+
+    def _on_text_changed(self):
+        """
+        when the text changes
+        """
+        path = self.ui.path.text()
+
+        if os.path.exists(path) and len(os.listdir(path)) == 0:
+            # empty folder - show option to copy config
+            self.ui.copy_config.setChecked(True)
+        else:
+            self.ui.copy_config.setChecked(False)
+
     def _browse(self):
         """
         shows a file browser
         """
-
         dialog = QtGui.QFileDialog()
         dialog.setOption(QtGui.QFileDialog.ShowDirsOnly)
         dialog.setFileMode(QtGui.QFileDialog.Directory)
@@ -69,7 +85,8 @@ class AppDialog(QtGui.QWidget):
         if result == QtGui.QDialog.Accepted:
             files = dialog.selectedFiles()
             if len(files) > 0:
-                self.ui.path.setText(files[0])
+                path = files[0]
+                self.ui.path.setText(path)
 
     def _process(self):
         """
@@ -106,21 +123,7 @@ class AppDialog(QtGui.QWidget):
             )
             return
 
-        copy_files = False
-        files = os.listdir(path)
-        if len(files) == 0:
-            # empty folder - ask if we should copy contents
-            answer = QtGui.QMessageBox.question(
-                self,
-                "Copy configuration?",
-                ("The folder you have selected is empty. Would you like "
-                "the folder to be prepopulated with the current configuration?"),
-                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No | QtGui.QMessageBox.Cancel
-            )
-            if answer == QtGui.QMessageBox.Cancel:
-                return
-            elif answer == QtGui.QMessageBox.Yes:
-                copy_files = True
+        copy_files = self.ui.copy_config.isChecked()
 
         # now you can use the overlay to report things to the user
         try:

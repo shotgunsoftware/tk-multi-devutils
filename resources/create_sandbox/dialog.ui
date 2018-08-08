@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>513</width>
-    <height>316</height>
+    <height>301</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,12 +21,16 @@
      </property>
      <widget class="QWidget" name="page_input">
       <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0" colspan="2">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>Create a configuration sandbox on disk where you can make configuration changes, retrieve updates and do development.</string>
+       <item row="4" column="1">
+        <widget class="QCheckBox" name="copy_config">
+         <property name="toolTip">
+          <string>If you tick this, the configuration will be copied into the location automatically.
+If you leave it blank, you have to manually add a configuration, for example via source control.</string>
          </property>
-         <property name="wordWrap">
+         <property name="text">
+          <string>Copy configuration into folder</string>
+         </property>
+         <property name="checked">
           <bool>true</bool>
          </property>
         </widget>
@@ -47,17 +51,34 @@
          </property>
         </spacer>
        </item>
-       <item row="3" column="2">
-        <widget class="QToolButton" name="browse">
-         <property name="text">
-          <string>...</string>
-         </property>
-        </widget>
-       </item>
        <item row="2" column="0">
         <widget class="QLabel" name="label_3">
          <property name="text">
           <string>Config Name</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="path">
+         <property name="toolTip">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="2">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Create a configuration sandbox on disk where you can make configuration changes, retrieve updates and do development.</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QToolButton" name="browse">
+         <property name="text">
+          <string>...</string>
          </property>
         </widget>
        </item>
@@ -68,7 +89,7 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0" colspan="2">
+       <item row="5" column="0" colspan="2">
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -80,13 +101,6 @@
           </size>
          </property>
         </spacer>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLineEdit" name="path">
-         <property name="toolTip">
-          <string>If you specify an empty folder, you will be prompted if you would like the configuration to be automatically copied into place.</string>
-         </property>
-        </widget>
        </item>
        <item row="2" column="1">
         <widget class="QLineEdit" name="config_name"/>
