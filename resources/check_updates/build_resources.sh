@@ -40,6 +40,7 @@ function build_res {
 echo "building user interfaces..."
 UI_PYTHON_PATH=../../python/check_updates/ui
 build_ui dialog
+build_ui yes_no_dialog
 
 # build resources
 echo "building resources..."
