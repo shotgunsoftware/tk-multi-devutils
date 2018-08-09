@@ -94,6 +94,8 @@ class AppDialog(QtGui.QWidget):
             updates_cmd.set_logger(self._logger)
             updates_cmd.execute({"supress_prompts": False})
 
+        self.ui.cancel.setText("Close")
+
     def _on_stdout(self, content):
 
         text = self.ui.plainTextEdit.toPlainText()
