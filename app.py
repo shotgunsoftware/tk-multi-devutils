@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Shotgun Software Inc.
+# Copyright (c) 2018 Shotgun Software Inc.
 # 
 # CONFIDENTIAL AND PROPRIETARY
 # 
@@ -28,6 +28,7 @@ class MultiDevUtils(sgtk.platform.Application):
 
         if not pipeline_config_id:
             # old configs can be bare
+            logger.debug("Not initializing: No pipeline config id detected for this setup.")
             return
 
         sg_data = self.shotgun.find_one(
@@ -38,6 +39,7 @@ class MultiDevUtils(sgtk.platform.Application):
 
         if sg_data and (sg_data["windows_path"] or sg_data["mac_path"] or sg_data["linux_path"]):
             # centralized config - no devtools for those!
+            logger.debug("Centralized config detected. No devtools will be enabled.")
             return
 
         # certain menu options are only available if you
@@ -46,12 +48,12 @@ class MultiDevUtils(sgtk.platform.Application):
 
             # command to jump to the dev area.
             menu_options = {
-                "short_name": "jump_to_sandbox",
+                "short_name": "open_config_location",
                 "description": "Opens a file browser pointing at your dev sandbox.",
                 "type": "context_menu",
             }
             self.engine.register_command(
-                "Jump to config sandbox",
+                "Open config location on disk",
                 self._jump_to_dev_area,
                 menu_options
             )
@@ -76,18 +78,21 @@ class MultiDevUtils(sgtk.platform.Application):
         }
         self.engine.register_command(
             "New config sandbox...",
-            self._new_config,
+            self._new_config_sandbox,
             menu_options
         )
 
     def _updates(self):
-
+        """
+        Callback to show the updates UI dialog
+        """
         check_updates = self.import_module("check_updates")
         check_updates.show_dialog(self)
 
-
-    def _new_config(self):
-
+    def _new_config_sandbox(self):
+        """
+        Callback to show the new config sandbox UI dialog
+        """
         create_sandbox = self.import_module("create_sandbox")
         create_sandbox.show_dialog(self)
 
@@ -117,8 +122,3 @@ class MultiDevUtils(sgtk.platform.Application):
         """
         return True
 
-    def destroy_app(self):
-        """
-        Tear down the app
-        """
-        self.log_debug("Destroying tk-multi-publish2")

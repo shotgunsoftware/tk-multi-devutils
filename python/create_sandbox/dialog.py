@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Shotgun Software Inc.
+# Copyright (c) 2018 Shotgun Software Inc.
 #
 # CONFIDENTIAL AND PROPRIETARY
 #
@@ -16,19 +16,14 @@ from sgtk.platform.qt import QtCore, QtGui
 from .ui.dialog import Ui_Dialog
 
 # import frameworks
-settings = sgtk.platform.import_framework("tk-framework-shotgunutils", "settings")
-help_screen = sgtk.platform.import_framework("tk-framework-qtwidgets", "help_screen")
 overlay = sgtk.platform.import_framework("tk-framework-qtwidgets", "overlay_widget")
-task_manager = sgtk.platform.import_framework("tk-framework-shotgunutils", "task_manager")
-shotgun_model = sgtk.platform.import_framework("tk-framework-shotgunutils", "shotgun_model")
-shotgun_globals = sgtk.platform.import_framework("tk-framework-shotgunutils", "shotgun_globals")
 
 logger = sgtk.platform.get_logger(__name__)
 
 
 class AppDialog(QtGui.QWidget):
     """
-    Main dialog window for the App
+    Create dev sandbox dialog UI
     """
 
     def __init__(self, parent=None):
@@ -60,11 +55,11 @@ class AppDialog(QtGui.QWidget):
         self.ui.browse.clicked.connect(self._browse)
         self.ui.action_button.clicked.connect(self._process)
 
-        self.ui.path.textChanged.connect(self._on_text_changed)
+        self.ui.path.textChanged.connect(self._on_path_changed)
 
-    def _on_text_changed(self):
+    def _on_path_changed(self):
         """
-        when the text changes
+        When the path changes
         """
         path = self.ui.path.text()
 
@@ -72,11 +67,12 @@ class AppDialog(QtGui.QWidget):
             # empty folder - show option to copy config
             self.ui.copy_config.setChecked(True)
         else:
+            # folder with existing content - untick copy option
             self.ui.copy_config.setChecked(False)
 
     def _browse(self):
         """
-        shows a file browser
+        Shows a file browser
         """
         dialog = QtGui.QFileDialog()
         dialog.setOption(QtGui.QFileDialog.ShowDirsOnly)
@@ -90,7 +86,7 @@ class AppDialog(QtGui.QWidget):
 
     def _process(self):
         """
-        Create a new configuration
+        Creates a new configuration
         """
         path = self.ui.path.text()
         if isinstance(path, unicode):
@@ -114,7 +110,7 @@ class AppDialog(QtGui.QWidget):
             )
             return
 
-        # if directory is empty, ask if we should copy stuff
+        # must point to an existing directory
         if not os.path.exists(path):
             QtGui.QMessageBox.critical(
                 self,
@@ -132,7 +128,9 @@ class AppDialog(QtGui.QWidget):
 
             if copy_files:
                 config_descriptor = self._bundle.sgtk.configuration_descriptor
+                logger.debug("Copying config files from %r to %s" % (config_descriptor, path))
                 config_descriptor.copy(path)
+                # delete system files
                 sgtk.util.filesystem.safe_delete_folder(
                     os.path.join(path, "tk-metadata")
                 )
@@ -151,7 +149,8 @@ class AppDialog(QtGui.QWidget):
             descriptor_uri = "sgtk:descriptor:dev?path=%s" % urllib.quote(path)
 
             # ok we are good to go!
-            self._bundle.shotgun.create(
+            logger.debug("Creating new pipeline config in Shotgun...")
+            sg_data = self._bundle.shotgun.create(
                 "PipelineConfiguration",
                 {
                     "code": self.ui.config_name.text(),
@@ -160,16 +159,17 @@ class AppDialog(QtGui.QWidget):
                     "descriptor": descriptor_uri
                 }
             )
+            logger.debug("Created %s" % sg_data)
 
             QtCore.QCoreApplication.processEvents()
 
         except Exception, e:
             # failure
             self._overlay.show_error_message("An error was reported: %s" % e)
+            logger.exception("An exception was raised during sandbox creation.")
         else:
             # success - show tick screen
             self.ui.stackedWidget.setCurrentIndex(1)
-
         finally:
             # change button to close button
             self.ui.action_button.setText("Close")

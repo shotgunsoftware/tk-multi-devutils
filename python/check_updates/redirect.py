@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Shotgun Software Inc.
+# Copyright (c) 2018 Shotgun Software Inc.
 #
 # CONFIDENTIAL AND PROPRIETARY
 #
@@ -10,26 +10,22 @@
 
 import sys
 
-# NOTE: This repo is typically used as a Toolkit app, but it is also possible use the console in a
-# stand alone fashion. This try/except allows portions of the console to be imported outside of a
-# Shotgun/Toolkit environment. Flame, for example, uses the console when there is no Toolkit
-# engine running.
-try:
-    from sgtk.platform.qt import QtCore, QtGui
-except ImportError:
-    from PySide import QtCore, QtGui
+from sgtk.platform.qt import QtCore, QtGui
+
 
 class StdinRedirector(QtCore.QObject):
-    """Handles redirecting stdin.
-
+    """
+    Handles redirecting stdin.
     Sends an input signal when stdin is read from.
     """
 
-    input_requested = QtCore.Signal(str)
-
     def __init__(self, readline_callback, parent=None):
-        """Initialize the redirection object.
+        """
+        Initialize the redirection object.
 
+        :param readline_callback: Method that will be executed when
+            the system is looking for input. Should return
+            a string of input as it would be provided by a user.
         :param parent: The parent qt object.
         """
         super(StdinRedirector, self).__init__(parent)
@@ -37,8 +33,8 @@ class StdinRedirector(QtCore.QObject):
         self._readline_callback = readline_callback
 
     def __enter__(self):
-        """Begin redirection.
-
+        """
+        Begin redirection.
         Temporarily assigns stdin to this object for writing.
         """
         self._handle = sys.stdin
@@ -46,14 +42,11 @@ class StdinRedirector(QtCore.QObject):
         return self
 
     def __exit__(self, type, value, traceback):
-        """Finish redirection.
-
+        """
+        Finish redirection.
         Repoint sys.stdin to the original handle.
         """
         sys.stdin = self._handle
-
-    def readline(self):
-        return self._readline_callback()
 
 
 class StdoutRedirector(QtCore.QObject):

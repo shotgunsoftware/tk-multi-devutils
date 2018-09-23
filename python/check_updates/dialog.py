@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Shotgun Software Inc.
+# Copyright (c) 2018 Shotgun Software Inc.
 #
 # CONFIDENTIAL AND PROPRIETARY
 #
@@ -15,25 +15,28 @@ from contextlib import nested
 from sgtk.platform.qt import QtCore, QtGui
 from .ui.dialog import Ui_Dialog
 from .redirect import StderrRedirector, StdinRedirector, StdoutRedirector
-
 from .yes_no_dialog import YesNoDialog
-
-# import frameworks
-settings = sgtk.platform.import_framework("tk-framework-shotgunutils", "settings")
-help_screen = sgtk.platform.import_framework("tk-framework-qtwidgets", "help_screen")
-task_manager = sgtk.platform.import_framework("tk-framework-shotgunutils", "task_manager")
-shotgun_model = sgtk.platform.import_framework("tk-framework-shotgunutils", "shotgun_model")
-shotgun_globals = sgtk.platform.import_framework("tk-framework-shotgunutils", "shotgun_globals")
 
 logger = sgtk.platform.get_logger(__name__)
 
+
 class QtLogHandler(logging.Handler):
+    """
+    Log handler which emits to a given text edit widget.
+    """
 
     def __init__(self, text_edit_widget):
+        """
+        :param text_edit_widget: QPlainTextEdit widget to emit logs to
+        """
         super(QtLogHandler, self).__init__()
         self._text_edit_widget = text_edit_widget
 
     def emit(self, record):
+        """
+        Emit the given log record
+        :param record: Std log record.
+        """
         log_entry = self.format(record)
         text = self._text_edit_widget.toPlainText()
         text += log_entry
@@ -49,7 +52,7 @@ class QtLogHandler(logging.Handler):
 
 class AppDialog(QtGui.QWidget):
     """
-    Main dialog window for the App
+    Pops up a dialog and executes tank updates.
     """
 
     def __init__(self, parent=None):
@@ -72,6 +75,7 @@ class AppDialog(QtGui.QWidget):
         self._stdout_redirect.output.connect(self._on_stdout)
         self._stderr_redirect.error.connect(self._on_stderr)
 
+        # set up log redirectin to UI for tank commands.
         self._logger = logging.getLogger("tank_command")
         self._logger.setLevel(logging.INFO)
         self._handler = QtLogHandler(self.ui.plainTextEdit)
@@ -85,10 +89,10 @@ class AppDialog(QtGui.QWidget):
         # automatically start update after a short delay
         QtCore.QTimer.singleShot(400, self._doit)
 
-    # todo - proper deinit on close
-
     def _doit(self):
-
+        """
+        Execute the tank updates command
+        """
         with nested(self._stdout_redirect, self._stdin_redirect):
             updates_cmd = self._bundle.sgtk.get_command("updates")
             updates_cmd.set_logger(self._logger)
@@ -97,7 +101,10 @@ class AppDialog(QtGui.QWidget):
         self.ui.cancel.setText("Close")
 
     def _on_stdout(self, content):
-
+        """
+        Stdout callback
+        :param str content: Content to render.
+        """
         text = self.ui.plainTextEdit.toPlainText()
         text += content
         text += "\n"
@@ -110,6 +117,10 @@ class AppDialog(QtGui.QWidget):
         QtCore.QCoreApplication.processEvents()
 
     def _on_stderr(self, content):
+        """
+        Stderr callback
+        :param str content: Content to render.
+        """
         text = self.ui.plainTextEdit.toPlainText()
         text += content
         text += "\n"
@@ -149,7 +160,7 @@ class AppDialog(QtGui.QWidget):
             return dialog.value + "\n"
 
         else:
-            # general input catch-all
+            # general input catch-all, display a text input box
             dialog = QtGui.QInputDialog(
                 parent=self,
                 flags=QtCore.Qt.FramelessWindowHint

@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Shotgun Software Inc.
+# Copyright (c) 2018 Shotgun Software Inc.
 #
 # CONFIDENTIAL AND PROPRIETARY
 #
@@ -9,27 +9,21 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 import sgtk
-import logging
 
-from contextlib import nested
 from sgtk.platform.qt import QtCore, QtGui
 from .ui.yes_no_dialog import Ui_YesNoDialog
-from .redirect import StderrRedirector, StdinRedirector, StdoutRedirector
-
-# import frameworks
-settings = sgtk.platform.import_framework("tk-framework-shotgunutils", "settings")
-help_screen = sgtk.platform.import_framework("tk-framework-qtwidgets", "help_screen")
-task_manager = sgtk.platform.import_framework("tk-framework-shotgunutils", "task_manager")
-shotgun_model = sgtk.platform.import_framework("tk-framework-shotgunutils", "shotgun_model")
-shotgun_globals = sgtk.platform.import_framework("tk-framework-shotgunutils", "shotgun_globals")
 
 logger = sgtk.platform.get_logger(__name__)
 
 
-
 class YesNoDialog(QtGui.QDialog):
     """
-    Yes No Dialog
+    Yes No Dialog overlay to be used in conjuntion with the main updates window.
+
+    Intended to be called as a modal dialog. It will pop up as a frameless
+    window overlay at the bottom of the parent window. After the user has
+    made a selection, the ``value`` property can be used to retrieve the
+    selected value.
     """
 
     def __init__(self, label, show_always=False, parent=None):
@@ -49,20 +43,24 @@ class YesNoDialog(QtGui.QDialog):
         self.ui.label.setText(label)
         self.ui.always.setVisible(show_always)
 
+        # position at the bottom of the parent UI
         self.move(
             parent.mapToGlobal(parent.rect().topLeft()).x()+2,
             parent.mapToGlobal(parent.rect().bottomLeft()).y() - self.height() - 4
         )
         self.resize(parent.width()-4, self.height())
 
-        self._value = None
-
+        self._value = "N"
         self.ui.yes.clicked.connect(self._on_yes)
         self.ui.no.clicked.connect(self._on_no)
         self.ui.always.clicked.connect(self._on_always)
 
     @property
     def value(self):
+        """
+        The selected outcome as a string,
+        either 'Y', 'N' or 'A'
+        """
         return self._value
 
     def _on_yes(self):
