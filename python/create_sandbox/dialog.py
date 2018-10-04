@@ -146,7 +146,8 @@ class AppDialog(QtGui.QWidget):
 
             QtCore.QCoreApplication.processEvents()
 
-            descriptor_uri = "sgtk:descriptor:dev?path=%s" % urllib.quote(path)
+            path_obj = sgtk.util.ShotgunPath.from_current_os_path(path)
+            descriptor_uri = path_obj.as_descriptor_uri(for_development=True)
 
             # ok we are good to go!
             logger.debug("Creating new pipeline config in Shotgun...")
