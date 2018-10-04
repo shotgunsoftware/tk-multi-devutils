@@ -101,19 +101,7 @@ class MultiDevUtils(sgtk.platform.Application):
         Open a OS file manager and point it at the dev area.
         """
         disk_location = self.sgtk.configuration_descriptor.get_path()
-
-        if sys.platform.startswith("linux"):
-            cmd = 'xdg-open "%s"' % disk_location
-        elif sys.platform == "darwin":
-            cmd = 'open "%s"' % disk_location
-        elif sys.platform == "win32":
-            cmd = 'cmd.exe /C start "Folder" "%s"' % disk_location
-        else:
-            raise RuntimeError("Platform '%s' is not supported." % sys.platform)
-
-        exit_code = os.system(cmd)
-        if exit_code != 0:
-            logger.error("Failed to launch '%s'!", cmd)
+        sgtk.util.filesystem.open_file_browser(disk_location)
 
     @property
     def context_change_allowed(self):
