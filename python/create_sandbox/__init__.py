@@ -10,6 +10,7 @@
 
 import sgtk
 
+
 def show_dialog(app):
     """
     Show the main dialog ui
@@ -21,7 +22,3 @@ def show_dialog(app):
 
     # start ui
     app.engine.show_dialog("Create Config Sandbox", app, AppDialog)
-
-
-
-

@@ -96,7 +96,7 @@ class AppDialog(QtGui.QWidget):
         with nested(self._stdout_redirect, self._stdin_redirect):
             updates_cmd = self._bundle.sgtk.get_command("updates")
             updates_cmd.set_logger(self._logger)
-            updates_cmd.execute({"supress_prompts": False})
+            updates_cmd.execute({"suppress_prompts": False})
 
         self.ui.cancel.setText("Close")
 
@@ -181,4 +181,3 @@ class AppDialog(QtGui.QWidget):
                     return ""
             finally:
                 self.setFocus()
-

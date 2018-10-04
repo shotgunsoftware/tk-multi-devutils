@@ -102,6 +102,7 @@ class StdoutRedirector(QtCore.QObject):
         if self._tee and self._handle:
             self._handle.write(msg)
 
+
 class StderrRedirector(QtCore.QObject):
     """Handles redirecting stderr.
 

@@ -121,4 +121,3 @@ class MultiDevUtils(sgtk.platform.Application):
         Specifies that context changes are allowed.
         """
         return True
-

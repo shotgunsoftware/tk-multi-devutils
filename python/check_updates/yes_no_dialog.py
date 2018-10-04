@@ -74,4 +74,3 @@ class YesNoDialog(QtGui.QDialog):
     def _on_always(self):
         self._value = "A"
         self.close()
-
