@@ -9,7 +9,6 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 import sgtk
-import urllib
 import os
 from sgtk.platform.qt import QtCore, QtGui
 
@@ -174,4 +173,5 @@ class AppDialog(QtGui.QWidget):
         finally:
             # change button to close button
             self.ui.action_button.setText("Close")
+            self.ui.action_button.clicked.discconnect(self._process)
             self.ui.action_button.clicked.connect(self.close)
