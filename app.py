@@ -42,6 +42,18 @@ class MultiDevUtils(sgtk.platform.Application):
             logger.debug("Centralized config detected. No devtools will be enabled.")
             return
 
+        # command to create a dev sandbox
+        menu_options = {
+            "short_name": "new_config_sandbox",
+            "description": "Create a pipeline configuration which can be used for development.",
+            "type": "context_menu",
+        }
+        self.engine.register_command(
+            "New config sandbox...",
+            self._new_config_sandbox,
+            menu_options
+        )
+
         # certain menu options are only available if you
         # are running out of a dev descriptor config:
         if self.sgtk.configuration_descriptor.is_dev():
@@ -70,24 +82,39 @@ class MultiDevUtils(sgtk.platform.Application):
                 menu_options
             )
 
-        # command to create a dev sandbox
-        menu_options = {
-            "short_name": "new_config_sandbox",
-            "description": "Create a pipeline configuration which can be used for development.",
-            "type": "context_menu",
-        }
-        self.engine.register_command(
-            "New config sandbox...",
-            self._new_config_sandbox,
-            menu_options
-        )
+            # command to validate
+            menu_options = {
+                "short_name": "core",
+                "description": "Check for core updates.",
+                "type": "context_menu",
+            }
+            self.engine.register_command(
+                "Check for core updates...",
+                self._check_core_updates,
+                menu_options
+            )
 
     def _updates(self):
         """
-        Callback to show the updates UI dialog
+        Callback to launch check for updates tank command
         """
-        check_updates = self.import_module("check_updates")
-        check_updates.show_dialog(self)
+        command_runner = self.import_module("command_runner")
+        command_runner.show_dialog(
+            self,
+            "Check for Updates",
+            "updates"
+        )
+
+    def _check_core_updates(self):
+        """
+        Callback to launch the validate tank command
+        """
+        command_runner = self.import_module("command_runner")
+        command_runner.show_dialog(
+            self,
+            "Check for core updates",
+            "core"
+        )
 
     def _new_config_sandbox(self):
         """

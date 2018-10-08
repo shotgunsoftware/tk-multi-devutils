@@ -14,9 +14,9 @@ class Ui_Dialog(object):
         Dialog.resize(575, 561)
         self.verticalLayout = QtGui.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.plainTextEdit = QtGui.QPlainTextEdit(Dialog)
-        self.plainTextEdit.setObjectName("plainTextEdit")
-        self.verticalLayout.addWidget(self.plainTextEdit)
+        self.log = QtGui.QPlainTextEdit(Dialog)
+        self.log.setObjectName("log")
+        self.verticalLayout.addWidget(self.log)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
@@ -30,7 +30,7 @@ class Ui_Dialog(object):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Shotgun Publish", None, QtGui.QApplication.UnicodeUTF8))
+        Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Check for updates", None, QtGui.QApplication.UnicodeUTF8))
         self.cancel.setText(QtGui.QApplication.translate("Dialog", "Cancel", None, QtGui.QApplication.UnicodeUTF8))
 
 from . import resources_rc

@@ -11,11 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Shotgun Publish</string>
+   <string>Check for updates</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QPlainTextEdit" name="plainTextEdit"/>
+    <widget class="QPlainTextEdit" name="log"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">

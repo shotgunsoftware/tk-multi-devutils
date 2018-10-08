@@ -11,7 +11,7 @@
 import sgtk
 
 
-def show_dialog(app):
+def show_dialog(app, title, command_name):
     """
     Show the main dialog ui
 
@@ -21,4 +21,4 @@ def show_dialog(app):
     from .dialog import AppDialog
 
     # start ui
-    app.engine.show_dialog("Check for Updates", app, AppDialog)
+    app.engine.show_dialog(title, app, AppDialog, command_name=command_name)
