@@ -24,21 +24,8 @@ class MultiDevUtils(sgtk.platform.Application):
         """
         Called as the application is being initialized
         """
-        pipeline_config_id = self.sgtk.pipeline_configuration.get_shotgun_id()
-
-        if not pipeline_config_id:
-            # old configs can be bare
-            logger.debug("Not initializing: No pipeline config id detected for this setup.")
-            return
-
-        sg_data = self.shotgun.find_one(
-            "PipelineConfiguration",
-            [["id", "is", pipeline_config_id]],
-            ["windows_path", "linux_path", "mac_path"]
-        )
-
-        if sg_data and (sg_data["windows_path"] or sg_data["mac_path"] or sg_data["linux_path"]):
-            # centralized config - no devtools for those!
+        if self.sgtk.configuration_mode != self.sgtk.DISTRIBUTED:
+            # not a distributed config - no devtools
             logger.debug("Centralized config detected. No devtools will be enabled.")
             return
 

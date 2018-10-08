@@ -121,7 +121,7 @@ class AppDialog(QtGui.QWidget):
 
         copy_files = self.ui.copy_config.isChecked()
 
-        # now you can use the overlay to report things to the user
+        # turn on progress overlay, start setting things up
         try:
             self._overlay.start_spin()
             QtCore.QCoreApplication.processEvents()
@@ -140,7 +140,7 @@ class AppDialog(QtGui.QWidget):
             # get the current pipeline config id
             sg_data_current_pc = self._bundle.shotgun.find_one(
                 "PipelineConfiguration",
-                [["id", "is", self._bundle.sgtk.pipeline_configuration.get_shotgun_id()]],
+                [["id", "is", self._bundle.sgtk.configuration_id]],
                 ["project", "plugin_ids"]
             )
 
