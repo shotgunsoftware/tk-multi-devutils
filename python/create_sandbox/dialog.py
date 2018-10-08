@@ -172,6 +172,6 @@ class AppDialog(QtGui.QWidget):
             self.ui.stackedWidget.setCurrentIndex(1)
         finally:
             # change button to close button
-            self.ui.action_button.setText("Close")
-            self.ui.action_button.clicked.discconnect(self._process)
+            self.ui.action_button.clicked.disconnect()
             self.ui.action_button.clicked.connect(self.close)
+            self.ui.action_button.setText("Close")
