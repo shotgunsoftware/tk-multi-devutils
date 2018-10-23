@@ -125,17 +125,6 @@ class AppDialog(QtGui.QWidget):
             self._overlay.start_spin()
             QtCore.QCoreApplication.processEvents()
 
-            if copy_files:
-                config_descriptor = self._bundle.sgtk.configuration_descriptor
-                logger.debug("Copying config files from %r to %s" % (config_descriptor, path))
-                config_descriptor.copy(path)
-                # delete system files
-                sgtk.util.filesystem.safe_delete_folder(
-                    os.path.join(path, "tk-metadata")
-                )
-
-            QtCore.QCoreApplication.processEvents()
-
             # get the current pipeline config id
             sg_data_current_pc = self._bundle.shotgun.find_one(
                 "PipelineConfiguration",
@@ -150,16 +139,40 @@ class AppDialog(QtGui.QWidget):
 
             # ok we are good to go!
             logger.debug("Creating new pipeline config in Shotgun...")
-            sg_data = self._bundle.shotgun.create(
-                "PipelineConfiguration",
-                {
-                    "code": self.ui.config_name.text(),
-                    "plugin_ids": sg_data_current_pc["plugin_ids"],  # inherit from source config
-                    "project": sg_data_current_pc["project"],  # inherit from source config
-                    "descriptor": descriptor_uri
-                }
-            )
-            logger.debug("Created %s" % sg_data)
+            try:
+                sg_data = self._bundle.shotgun.create(
+                    "PipelineConfiguration",
+                    {
+                        "code": self.ui.config_name.text(),
+                        "plugin_ids": sg_data_current_pc["plugin_ids"],  # inherit from source config
+                        "project": sg_data_current_pc["project"],  # inherit from source config
+                        "descriptor": descriptor_uri
+                    }
+                )
+            except Exception as e:
+                # capture the permissions error specifically and provide a better
+                # error message
+                if "PipelineConfiguration cannot be created by this user" in str(e):
+                    raise RuntimeError(
+                        "You do not have permission to create Pipeline Configurations in Shotgun. "
+                        "Please contact your site administrator."
+                    )
+                else:
+                    # re-raise
+                    raise
+            else:
+                logger.debug("Created %s" % sg_data)
+
+            QtCore.QCoreApplication.processEvents()
+
+            if copy_files:
+                config_descriptor = self._bundle.sgtk.configuration_descriptor
+                logger.debug("Copying config files from %r to %s" % (config_descriptor, path))
+                config_descriptor.copy(path)
+                # delete system files
+                sgtk.util.filesystem.safe_delete_folder(
+                    os.path.join(path, "tk-metadata")
+                )
 
             QtCore.QCoreApplication.processEvents()
 
