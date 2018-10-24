@@ -25,7 +25,8 @@
         <widget class="QCheckBox" name="copy_config">
          <property name="toolTip">
           <string>If you tick this, the configuration will be copied into the location automatically.
-If you leave it blank, you have to manually add a configuration, for example via source control.</string>
+If you leave it blank, you have to manually add a configuration, for example via source control.
+If you select a folder which already contains files, copying will be disabled.</string>
          </property>
          <property name="text">
           <string>Copy configuration into folder</string>

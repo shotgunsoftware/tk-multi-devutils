@@ -94,7 +94,8 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Create Config Sandbox", None, QtGui.QApplication.UnicodeUTF8))
         self.copy_config.setToolTip(QtGui.QApplication.translate("Dialog", "If you tick this, the configuration will be copied into the location automatically.\n"
-"If you leave it blank, you have to manually add a configuration, for example via source control.", None, QtGui.QApplication.UnicodeUTF8))
+"If you leave it blank, you have to manually add a configuration, for example via source control.\n"
+"If you select a folder which already contains files, copying will be disabled.", None, QtGui.QApplication.UnicodeUTF8))
         self.copy_config.setText(QtGui.QApplication.translate("Dialog", "Copy configuration into folder", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("Dialog", "Config Name", None, QtGui.QApplication.UnicodeUTF8))
         self.label_5.setText(QtGui.QApplication.translate("Dialog", "Create a configuration sandbox on disk where you can make configuration changes, retrieve updates and do development.", None, QtGui.QApplication.UnicodeUTF8))

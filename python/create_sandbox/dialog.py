@@ -9,6 +9,7 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 import sgtk
+import datetime
 import os
 from sgtk.platform.qt import QtCore, QtGui
 
@@ -38,17 +39,14 @@ class AppDialog(QtGui.QWidget):
         self.ui.setupUi(self)
 
         # untick copy checkbox
-        self.ui.copy_config.setChecked(False)
+        self.ui.copy_config.setChecked(True)
 
         # spinner widget
         # now inside your app constructor, create an overlay and parent it to something
         self._overlay = overlay.ShotgunOverlayWidget(self.ui.page_input)
 
         # populate a default name for the sandbox
-        default_name = "Config Sandbox"
-        user_data = sgtk.util.get_current_user(self._bundle.sgtk)
-        if user_data and "name" in user_data:
-            default_name = "%s's Config Sandbox" % user_data["name"]
+        default_name = "Config Sandbox %s" % datetime.datetime.now().strftime("%Y-%m-%d")
         self.ui.config_name.setText(default_name)
 
         self.ui.browse.clicked.connect(self._browse)
@@ -65,9 +63,12 @@ class AppDialog(QtGui.QWidget):
         if os.path.exists(path) and len(os.listdir(path)) == 0:
             # empty folder - show option to copy config
             self.ui.copy_config.setChecked(True)
+            self.ui.copy_config.setEnabled(True)
         else:
             # folder with existing content - untick copy option
             self.ui.copy_config.setChecked(False)
+            self.ui.copy_config.setEnabled(False)
+
 
     def _browse(self):
         """
