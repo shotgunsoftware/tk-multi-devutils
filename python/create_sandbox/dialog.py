@@ -138,6 +138,9 @@ class AppDialog(QtGui.QWidget):
             path_obj = sgtk.util.ShotgunPath.from_current_os_path(path)
             descriptor_uri = path_obj.as_descriptor_uri(for_development=True)
 
+            # get the current user
+            current_user_data = sgtk.util.get_current_user(self._bundle.sgtk)
+
             # ok we are good to go!
             logger.debug("Creating new pipeline config in Shotgun...")
             try:
@@ -145,6 +148,7 @@ class AppDialog(QtGui.QWidget):
                     "PipelineConfiguration",
                     {
                         "code": self.ui.config_name.text(),
+                        "users": [current_user_data] if current_user_data else None,
                         "plugin_ids": sg_data_current_pc["plugin_ids"],  # inherit from source config
                         "project": sg_data_current_pc["project"],  # inherit from source config
                         "descriptor": descriptor_uri
