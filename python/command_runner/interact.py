@@ -15,7 +15,6 @@ logger = sgtk.platform.get_logger(__name__)
 
 
 class QtInteraction(sgtk.CommandInteraction):
-
     def __init__(self, parent):
         self._parent = parent
         self._always_enabled = False
@@ -35,11 +34,7 @@ class QtInteraction(sgtk.CommandInteraction):
         :returns: Information entered by user.
         :rtype: str
         """
-        input, ok = QtGui.QInputDialog.getText(
-            self._parent,
-            "Shotgun",
-            message
-        )
+        input, ok = QtGui.QInputDialog.getText(self._parent, "Shotgun", message)
         return input
 
     def ask_yn_question(self, message):
@@ -54,7 +49,7 @@ class QtInteraction(sgtk.CommandInteraction):
             self._parent,
             "Shotgun",
             message,
-            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No
+            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
         )
 
         if res == QtGui.QMessageBox.Yes:
@@ -82,7 +77,7 @@ class QtInteraction(sgtk.CommandInteraction):
             self._parent,
             "Shotgun",
             message,
-            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No | QtGui.QMessageBox.YesToAll
+            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No | QtGui.QMessageBox.YesToAll,
         )
 
         if res == QtGui.QMessageBox.YesToAll:

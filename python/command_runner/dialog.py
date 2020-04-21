@@ -65,7 +65,9 @@ class AppDialog(QtGui.QWidget):
         self._command_obj = None
 
         self._logger.info("")
-        self._logger.info("The command has finished execution. Press Close to continue.")
+        self._logger.info(
+            "The command has finished execution. Press Close to continue."
+        )
 
         # turn cancel button into close button
         self.ui.cancel.setEnabled(True)

@@ -46,7 +46,9 @@ class AppDialog(QtGui.QWidget):
         self._overlay = overlay.ShotgunOverlayWidget(self.ui.page_input)
 
         # populate a default name for the sandbox
-        default_name = "Config Sandbox %s" % datetime.datetime.now().strftime("%Y-%m-%d")
+        default_name = "Config Sandbox %s" % datetime.datetime.now().strftime(
+            "%Y-%m-%d"
+        )
         self.ui.config_name.setText(default_name)
 
         self.ui.browse.clicked.connect(self._browse)
@@ -68,7 +70,6 @@ class AppDialog(QtGui.QWidget):
             # folder with existing content - untick copy option
             self.ui.copy_config.setChecked(False)
             self.ui.copy_config.setEnabled(False)
-
 
     def _browse(self):
         """
@@ -97,7 +98,7 @@ class AppDialog(QtGui.QWidget):
             QtGui.QMessageBox.critical(
                 self,
                 "No config name specified!",
-                "Please specify a name for your configuration."
+                "Please specify a name for your configuration.",
             )
             return
 
@@ -106,16 +107,14 @@ class AppDialog(QtGui.QWidget):
             QtGui.QMessageBox.critical(
                 self,
                 "No path specified!",
-                "Please specify a path to your config sandbox."
+                "Please specify a path to your config sandbox.",
             )
             return
 
         # must point to an existing directory
         if not os.path.exists(path):
             QtGui.QMessageBox.critical(
-                self,
-                "Path does not exist!",
-                "The path '%s' does not exist." % path
+                self, "Path does not exist!", "The path '%s' does not exist." % path
             )
             return
 
@@ -130,7 +129,7 @@ class AppDialog(QtGui.QWidget):
             sg_data_current_pc = self._bundle.shotgun.find_one(
                 "PipelineConfiguration",
                 [["id", "is", self._bundle.sgtk.configuration_id]],
-                ["project", "plugin_ids"]
+                ["project", "plugin_ids"],
             )
 
             QtCore.QCoreApplication.processEvents()
@@ -149,10 +148,14 @@ class AppDialog(QtGui.QWidget):
                     {
                         "code": self.ui.config_name.text(),
                         "users": [current_user_data] if current_user_data else None,
-                        "plugin_ids": sg_data_current_pc["plugin_ids"],  # inherit from source config
-                        "project": sg_data_current_pc["project"],  # inherit from source config
-                        "descriptor": descriptor_uri
-                    }
+                        "plugin_ids": sg_data_current_pc[
+                            "plugin_ids"
+                        ],  # inherit from source config
+                        "project": sg_data_current_pc[
+                            "project"
+                        ],  # inherit from source config
+                        "descriptor": descriptor_uri,
+                    },
                 )
             except Exception as e:
                 # capture the permissions error specifically and provide a better
@@ -172,7 +175,9 @@ class AppDialog(QtGui.QWidget):
 
             if copy_files:
                 config_descriptor = self._bundle.sgtk.configuration_descriptor
-                logger.debug("Copying config files from %r to %s" % (config_descriptor, path))
+                logger.debug(
+                    "Copying config files from %r to %s" % (config_descriptor, path)
+                )
                 config_descriptor.copy(path)
                 # delete system files
                 sgtk.util.filesystem.safe_delete_folder(

@@ -1,11 +1,11 @@
 # Copyright (c) 2018 Shotgun Software Inc.
-# 
+#
 # CONFIDENTIAL AND PROPRIETARY
-# 
-# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit 
+#
+# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit
 # Source Code License included in this distribution package. See LICENSE.
-# By accessing, using, copying or modifying this work you indicate your 
-# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
+# By accessing, using, copying or modifying this work you indicate your
+# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 import os
@@ -36,9 +36,7 @@ class MultiDevUtils(sgtk.platform.Application):
             "type": "context_menu",
         }
         self.engine.register_command(
-            "New config sandbox...",
-            self._new_config_sandbox,
-            menu_options
+            "New config sandbox...", self._new_config_sandbox, menu_options
         )
 
         # certain menu options are only available if you
@@ -52,9 +50,7 @@ class MultiDevUtils(sgtk.platform.Application):
                 "type": "context_menu",
             }
             self.engine.register_command(
-                "Open config location on disk",
-                self._jump_to_dev_area,
-                menu_options
+                "Open config location on disk", self._jump_to_dev_area, menu_options
             )
 
             # command to check for updates
@@ -64,9 +60,7 @@ class MultiDevUtils(sgtk.platform.Application):
                 "type": "context_menu",
             }
             self.engine.register_command(
-                "Check for config updates...",
-                self._updates,
-                menu_options
+                "Check for config updates...", self._updates, menu_options
             )
 
             # command to validate
@@ -76,9 +70,7 @@ class MultiDevUtils(sgtk.platform.Application):
                 "type": "context_menu",
             }
             self.engine.register_command(
-                "Check for core updates...",
-                self._check_core_updates,
-                menu_options
+                "Check for core updates...", self._check_core_updates, menu_options
             )
 
     def _updates(self):
@@ -86,22 +78,14 @@ class MultiDevUtils(sgtk.platform.Application):
         Callback to launch check for updates tank command
         """
         command_runner = self.import_module("command_runner")
-        command_runner.show_dialog(
-            self,
-            "Check for Updates",
-            "updates"
-        )
+        command_runner.show_dialog(self, "Check for Updates", "updates")
 
     def _check_core_updates(self):
         """
         Callback to launch the validate tank command
         """
         command_runner = self.import_module("command_runner")
-        command_runner.show_dialog(
-            self,
-            "Check for core updates",
-            "core"
-        )
+        command_runner.show_dialog(self, "Check for core updates", "core")
 
     def _new_config_sandbox(self):
         """
