@@ -181,7 +181,7 @@ class AppDialog(QtGui.QWidget):
 
             QtCore.QCoreApplication.processEvents()
 
-        except Exception, e:
+        except Exception as e:
             # failure
             self._overlay.show_error_message("An error was reported: %s" % e)
             logger.exception("An exception was raised during sandbox creation.")
