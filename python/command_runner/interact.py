@@ -73,12 +73,14 @@ class QtInteraction(sgtk.CommandInteraction):
             # always clicked
             return True
 
-        res = QtGui.QMessageBox.question(
-            self._parent,
-            "Shotgun",
-            message,
-            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No | QtGui.QMessageBox.YesToAll,
-        )
+        msgbx = QtGui.QMessageBox(self._parent)
+        msgbx.setWindowTitle("Shotgun")
+        msgbx.setIcon(msgbx.Icon.Question)
+        msgbx.setText(message)
+        msgbx.addButton(QtGui.QMessageBox.Yes)
+        msgbx.addButton(QtGui.QMessageBox.YesToAll)
+        msgbx.addButton(QtGui.QMessageBox.No)
+        res = msgbx.exec_()
 
         if res == QtGui.QMessageBox.YesToAll:
             self._always_enabled = True
