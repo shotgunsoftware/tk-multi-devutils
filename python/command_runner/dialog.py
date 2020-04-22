@@ -59,6 +59,7 @@ class AppDialog(QtGui.QWidget):
         """
         Execute the tank updates command
         """
+
         self._command_obj = self._bundle.sgtk.get_command(self._command_name)
         self._command_obj.set_logger(self._logger)
         self._command_obj.execute({}, self._interaction_interface)
@@ -73,6 +74,12 @@ class AppDialog(QtGui.QWidget):
         self.ui.cancel.setEnabled(True)
         self.ui.cancel.setText("Close")
         self.ui.cancel.clicked.connect(self.close)
+
+        reload = self._interaction_interface.ask_yn_question(
+            "Would you like to restart " "the engine to reload your changes?"
+        )
+        if reload:
+            sgtk.platform.restart()
 
     def _cancel(self):
         """
