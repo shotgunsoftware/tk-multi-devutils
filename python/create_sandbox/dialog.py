@@ -12,6 +12,7 @@ import sgtk
 import datetime
 import os
 from sgtk.platform.qt import QtCore, QtGui
+from tank_vendor import six
 
 from .ui.dialog import Ui_Dialog
 
@@ -89,9 +90,7 @@ class AppDialog(QtGui.QWidget):
         """
         Creates a new configuration
         """
-        path = self.ui.path.text()
-        if isinstance(path, unicode):
-            path = path.decode("utf-8")
+        path = six.ensure_str(self.ui.path.text())
 
         # validate the name
         if self.ui.config_name.text() == "":
