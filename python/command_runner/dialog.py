@@ -76,7 +76,7 @@ class AppDialog(QtGui.QWidget):
         self.ui.cancel.clicked.connect(self.close)
 
         reload = self._interaction_interface.ask_yn_question(
-            "Would you like to restart " "the engine to reload your changes?"
+            "Would you like to restart the engine to reload your changes?"
         )
         if reload:
             sgtk.platform.restart()
