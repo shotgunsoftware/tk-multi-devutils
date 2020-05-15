@@ -77,7 +77,7 @@ class QtInteraction(sgtk.CommandInteraction):
             self._parent,
             "Shotgun",
             message,
-            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No | QtGui.QMessageBox.YesToAll,
+            QtGui.QMessageBox.Yes | QtGui.QMessageBox.YesToAll | QtGui.QMessageBox.No,
         )
 
         if res == QtGui.QMessageBox.YesToAll:
