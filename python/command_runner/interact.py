@@ -34,7 +34,7 @@ class QtInteraction(sgtk.CommandInteraction):
         :returns: Information entered by user.
         :rtype: str
         """
-        input, ok = QtGui.QInputDialog.getText(self._parent, "Shotgun", message)
+        input, ok = QtGui.QInputDialog.getText(self._parent, "ShotGrid", message)
         return input
 
     def ask_yn_question(self, message):
@@ -47,7 +47,7 @@ class QtInteraction(sgtk.CommandInteraction):
         logger.warning("Yn")
         res = QtGui.QMessageBox.question(
             self._parent,
-            "Shotgun",
+            "ShotGrid",
             message,
             QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
         )
@@ -75,7 +75,7 @@ class QtInteraction(sgtk.CommandInteraction):
 
         res = QtGui.QMessageBox.question(
             self._parent,
-            "Shotgun",
+            "ShotGrid",
             message,
             QtGui.QMessageBox.Yes | QtGui.QMessageBox.YesToAll | QtGui.QMessageBox.No,
         )
