@@ -140,7 +140,7 @@ class AppDialog(QtGui.QWidget):
             current_user_data = sgtk.util.get_current_user(self._bundle.sgtk)
 
             # ok we are good to go!
-            logger.debug("Creating new pipeline config in Shotgun...")
+            logger.debug("Creating new pipeline config in ShotGrid...")
             try:
                 sg_data = self._bundle.shotgun.create(
                     "PipelineConfiguration",
@@ -161,7 +161,7 @@ class AppDialog(QtGui.QWidget):
                 # error message
                 if "PipelineConfiguration cannot be created by this user" in str(e):
                     raise RuntimeError(
-                        "You do not have permission to create Pipeline Configurations in Shotgun. "
+                        "You do not have permission to create Pipeline Configurations in ShotGrid. "
                         "Please contact your site administrator."
                     )
                 else:
