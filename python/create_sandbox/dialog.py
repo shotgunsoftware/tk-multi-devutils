@@ -12,7 +12,11 @@ import sgtk
 import datetime
 import os
 from sgtk.platform.qt import QtCore, QtGui
-from tank_vendor import sgutils
+
+try:
+    from tank_vendor import sgutils
+except ImportError:
+    from tank_vendor import six as sgutils
 
 from .ui.dialog import Ui_Dialog
 
