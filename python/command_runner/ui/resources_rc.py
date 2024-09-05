@@ -3,7 +3,7 @@
 # Created by: The Resource Compiler for Qt version 5.15.2
 # WARNING! All changes made in this file will be lost!
 
-from . import QtCore
+from tank.platform.qt import QtCore
 
 def qInitResources():
     QtCore.qRegisterResourceData(0x03, qt_resource_struct, qt_resource_name, qt_resource_data)
