@@ -13,11 +13,6 @@ import datetime
 import os
 from sgtk.platform.qt import QtCore, QtGui
 
-try:
-    from tank_vendor import sgutils
-except ImportError:
-    from tank_vendor import six as sgutils
-
 from .ui.dialog import Ui_Dialog
 
 # import frameworks
@@ -94,7 +89,7 @@ class AppDialog(QtGui.QWidget):
         """
         Creates a new configuration
         """
-        path = sgutils.ensure_str(self.ui.path.text())
+        path = self.ui.path.text()
 
         # validate the name
         if self.ui.config_name.text() == "":
