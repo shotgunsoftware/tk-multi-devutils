@@ -25,7 +25,7 @@ class QtLogHandler(logging.Handler):
         """
         :param text_edit_widget: QPlainTextEdit widget to emit logs to
         """
-        super(QtLogHandler, self).__init__()
+        super().__init__()
         self._text_edit_widget = text_edit_widget
 
     def emit(self, record):
